@@ -1,7 +1,14 @@
 import { menuArray } from './data.js'
 
 const MenuItemEle = document.getElementById('menu-items')
-const addBtn = document.querySelector('.add-btn')
+const checkoutEle = document.getElementById('checkout')
+
+document.addEventListener('click', function(e){
+    if(e.target.id === 'add-btn'){
+        checkoutEle.style.display = 'block'
+    }
+})
+
 
 
 function render(){
@@ -15,10 +22,10 @@ function render(){
                <p class="item-desc">${dish.ingredients.join(',')}</p>
                <p class="item-price">$${dish.price}</p>
            </div>
-           <i class="ri-add-circle-line add-btn"></i>
+           <i class="ri-add-circle-line add-btn" id="add-btn"></i>
        </div>
    </div>`
-    })
+    }).join(' ')
 
     
 

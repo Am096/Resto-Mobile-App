@@ -43,7 +43,7 @@ header{
 .dish-item{
     width: 508px;
     height: 140px;
-    margin: 45px auto;
+    margin: 40px auto 20px auto;
     border-bottom: 2px solid #D2D2D2;
 }
 
@@ -71,23 +71,53 @@ header{
 }
 
 .item-icon{
-    width: 70px;
+    width: 85px;
     height: 89px;
 }
 
 .item-name{
-    font-size: 28px;
+    font-size: 30px;
 }
 
 .item-desc{
-    font-size: 16px;
+    font-size: 18px;
     color: #8B8B8B;
 }
 
 .item-price{
-    font-size: 20px;
+    font-size: 22px;
 }
 
 
+.checkout {
+    display: none;
+    width: 508px;
+    height: 319px;
+    margin: 45px auto;
+    font-size: 28px;
+    background-color: aquamarine;
+}
+
+.checkout-header{
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.checkout-total{
+    padding: 8px 0;
+    border-top: 2px solid black;
+}
+
+.checkout button{
+    margin: 53px auto;
+    font-size: 16px;
+    color: #FFFFFF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: none;
+    border-radius: 2px;
+    width: 508px;
+    height: 60px;
+    background-color: #16DB99;
+}
 
 
