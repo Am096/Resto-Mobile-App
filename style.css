@@ -95,7 +95,7 @@ header{
     height: 319px;
     margin: 45px auto;
     font-size: 28px;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
 }
 
 .checkout-header{
@@ -108,7 +108,8 @@ header{
     border-top: 2px solid black;
 }
 
-.checkout button{
+.checkout .placeOrderBtn{
+    cursor: pointer;
     margin: 53px auto;
     font-size: 16px;
     color: #FFFFFF;
@@ -121,3 +122,20 @@ header{
 }
 
 
+.checkout-item-summary{
+    display: flex;
+    justify-content: space-between;
+}
+
+.remove {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: auto;
+    font-size: 12px;
+    color: #BBBBBB;
+    cursor: pointer;
+}
+
+.checkout-item-summary-partA{
+    display: flex;
+    gap: 25px;
+}

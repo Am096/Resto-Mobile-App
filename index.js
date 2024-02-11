@@ -1,47 +1,109 @@
 import { menuArray } from './data.js'
-
-const MenuItemEle = document.getElementById('menu-items')
-const checkoutEle = document.getElementById('checkout')
+ 
+let orderArr = []
+let countOrderArr = []
 
 document.addEventListener('click', function(e){
     if(e.target.id === 'add-btn'){
-        checkoutEle.style.display = 'block'
+        document.getElementById('checkout').style.display = 'block'
+        const orderArr = handleOrder(Number(e.target.dataset.itemid)) 
+        countOrderArr = getCountOrderArr(orderArr)
+        renderOrderCheckout(countOrderArr)
+    }else if(e.target.id === 'remove-btn'){
+        removeItem(e.target.dataset.itemname, countOrderArr)
     }
 })
 
 
 
-function render(){
-
-   return menuArray.map((dish)=>{
-       return `<div class="dish-item">
-       <div class="dish-item-inner">
-           <img class="item-icon" src="${dish.icon}" alt="${dish.name}">
-           <div class="item-inner-content">
-               <p class="item-name">${dish.name}</p>
-               <p class="item-desc">${dish.ingredients.join(',')}</p>
-               <p class="item-price">$${dish.price}</p>
-           </div>
-           <i class="ri-add-circle-line add-btn" id="add-btn"></i>
-       </div>
-   </div>`
-    }).join(' ')
-
-    
-
-//     <div class="dish-item">
-//     <div class="dish-item-inner">
-//         <img class="item-icon" src="images/item-pizza.png" alt="">
-//         <!-- <p class="item-emoji">🍕</p> -->
-//         <div class="item-inner-content">
-//             <p class="item-name">Pizza</p>
-//             <p class="item-desc">pepperoni,mushrom,mozarella</p>
-//             <p class="item-price">$14</p>
-//         </div>
-//         <i class="ri-add-circle-line add-btn"></i>
-//     </div>
-// </div>
+function handleOrder(itemId){
+    const targetDish = menuArray.filter(function(dish){
+        return dish.id === itemId
+    })[0]
+    orderArr.push({name:targetDish.name, price:targetDish.price})
+    return orderArr
 }
 
 
-MenuItemEle.innerHTML = render()
+function getCountOrderArr(orderArr){
+    let countOrderObj = {}
+
+    orderArr.forEach(item => {
+        let key = `${item.name}:${item.price}`
+        countOrderObj[key] = (countOrderObj[key] || 0) + 1;
+    });
+
+    let countOrderArr = Object.keys(countOrderObj).map(key =>{
+        let [name, price] = key.split(':')
+        return {
+            name : name,
+            price : price,
+            count : countOrderObj[key]
+        }
+    })
+    return countOrderArr
+}
+
+function renderOrderCheckout(countOrderArr){
+
+    let checkoutRenderString = ''
+
+    checkoutRenderString += countOrderArr.map((element) => {
+        return `<div class="checkout-item-summary">
+        <div class="checkout-item-summary-partA">
+          <p>${element.name}</p>
+          <p class="remove" id="remove-btn" data-itemname=${element.name}>remove</p>
+        </div>
+        <p>$${element.price*element.count}</p>
+      </div>`
+    }).join('')
+
+    document.getElementById('checkout-items').innerHTML = checkoutRenderString
+
+    let total = getTotal(countOrderArr)
+    document.getElementById('order-total').textContent = total
+}
+
+function getTotal(countOrderArr){
+    let total = 0
+    countOrderArr.forEach((item)=>{
+        const {price, count} = item
+        total += price * count
+    })
+    return total
+}
+
+function removeItem(itemName, countOrderArr){
+    const targetOrderItem = countOrderArr.find((item)=>{
+        return item.name === itemName
+    })
+
+    if(targetOrderItem && targetOrderItem.count>1){
+        targetOrderItem.count--
+    }else if(targetOrderItem && targetOrderItem.count === 1){
+        const index = countOrderArr.indexOf(targetOrderItem)
+        if(index !== -1){
+            countOrderArr.splice(index,1)
+        }
+    }
+
+    renderOrderCheckout(countOrderArr)
+}
+
+function render(){
+   return menuArray.map((dish)=>{
+       return `<div class="dish-item ">
+       <div class="dish-item-inner">
+           <img class="item-icon" src="${dish.icon}" alt="${dish.name}">
+           <div class="item-inner-content">
+               <p class="item-name" >${dish.name}</p>
+               <p class="item-desc" >${dish.ingredients.join(',')}</p>
+               <p class="item-price">$${dish.price}</p>
+           </div>
+           <i class="ri-add-circle-line add-btn" id="add-btn" data-itemid=${dish.id}></i>
+       </div>
+   </div>`
+    }).join(' ')
+}
+
+document.getElementById('menu-items').innerHTML = render()
