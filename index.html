@@ -15,43 +15,65 @@
     />
     <!-- REMIXICON -->
     <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
-    rel="stylesheet"
-/>
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
     <!-- JS -->
     <script defer src="index.js" type="module"></script>
   </head>
   <body>
     <div class="main-container">
-        <header>
-            <div class="header-txt">
-                <span class="header-title">Jimmy's Dinner</span>
-                <p>The best burgers and pizzas in town.</p>
-            </div>
-        </header>
-        <main>
-            <div class="menu-items" id="menu-items">
-            
-            </div>
+      <header>
+        <div class="header-txt">
+          <span class="header-title">Jimmy's Dinner</span>
+          <p>The best burgers and pizzas in town.</p>
+        </div>
+      </header>
+      <main>
+        <div class="menu-items" id="menu-items"></div>
 
-            <section class="checkout" id="checkout">
-                <p class="checkout-header">Your Order</p>
-                  <div class="checkout-items" id="checkout-items">
-                      
-                  </div>
-                <div class="checkout-total">
-                  <div class="checkout-item-summary">
-                    <p>Total Price</p>
-                    <p id="order-total">$0</p>
-                  </div>
-                </div>
-                <button class="placeOrderBtn">Complete Order</button>
-            </section>
-        </main>
+        <section class="checkout" id="checkout">
+          <p class="checkout-header">Your Order</p>
+          <div class="checkout-items" id="checkout-items"></div>
+          <div class="checkout-total">
+            <div class="checkout-item-summary">
+              <p>Total Price</p>
+              <p id="order-total">$0</p>
+            </div>
+          </div>
+          <button id="order-btn" class="placeOrderBtn">Complete Order</button>
+        </section>
+
+        <section id="payment-modal" class="modal">
+          <div class="modal-title">Enter card Details</div>
+
+          <form>
+            <input
+              class="input-rect"
+              id="name"
+              type="text"
+              required
+              placeholder="Enter your name"
+            />
+            <input
+              class="input-rect"
+              id="cardNumber"
+              type="text"
+              required
+              placeholder="Enter card number"
+            />
+            <input
+              class="input-rect"
+              id="cvvNumber"
+              type="text"
+              required
+              placeholder="Enter CVV"
+            />
+
+            <button type="submit" id="pay-btn" class="pay-btn">Pay</button>
+          </form>
+        </section>
+      </main>
     </div>
-
-
-
-
   </body>
 </html>
