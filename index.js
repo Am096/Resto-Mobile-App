@@ -3,6 +3,7 @@ import { menuArray } from "./data.js";
 let orderArr = [];
 let countOrderArr = [];
 
+
 document.addEventListener("click", function (e) {
   if (e.target.id === "add-btn") {
     document.getElementById("checkout").style.display = "block";
@@ -12,6 +13,64 @@ document.addEventListener("click", function (e) {
   } else if (e.target.id === "remove-btn") {
     removeItem(e.target.dataset.itemname, countOrderArr);
   }
+});
+
+document.getElementById("order-btn").addEventListener("click", function (e) {
+  e.preventDefault();
+  let total = getTotal(countOrderArr);
+  if(total>0){
+    document.getElementById("payment-modal").style.display = "block";
+  }else{
+    alert("Please add atleast 1 item!")
+  }
+});
+
+
+document
+  .getElementById("cardNumber")
+  .addEventListener("input", function (event) {
+    this.value = this.value.replace(/\D/g, "");
+
+    if (this.value.length > 12) {
+      this.value = this.value.slice(0, 12);
+    }
+  });
+
+document.querySelector("form").addEventListener("submit", function (event) {
+  if (document.getElementById('cardNumber').value.length < 12) {
+    event.preventDefault();
+    alert("Card number must be 12 digits long.");
+  }
+});
+
+document
+  .getElementById("cvvNumber")
+  .addEventListener("input", function (event) {
+    this.value = this.value.replace(/\D/g, "");
+
+    if (this.value.length > 3) {
+      this.value = this.value.slice(0, 3);
+    }
+  });
+
+document.querySelector("form").addEventListener("submit", function (event) {
+  if (document.getElementById('cardNumber').value.length < 3) {
+    event.preventDefault();
+    alert("CVV number must be 3 digits long.");
+  }
+});
+
+document.getElementById("pay-btn").addEventListener("click", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const cardNumber = document.getElementById("cardNumber").value;
+  const cvvNumber = document.getElementById("cvvNumber").value;
+  if(name.length>0 && cardNumber.length === 12 && cvvNumber.length === 3){
+    document.getElementById("payment-modal").style.display = "none";
+    renderOrderStatus(name);
+  }else{
+    alert("Please Enter the details correctly");
+  } 
 });
 
 function handleOrder(itemId) {
@@ -48,7 +107,7 @@ function renderOrderCheckout(countOrderArr) {
     .map((element) => {
       return `<div class="checkout-item-summary">
         <div class="checkout-item-summary-partA">
-          <p>${element.name}</p>
+          <p>${element.name} × ${element.count}</p>
           <p class="remove" id="remove-btn" data-itemname=${
             element.name
           }>remove</p>
@@ -61,7 +120,7 @@ function renderOrderCheckout(countOrderArr) {
   document.getElementById("checkout-items").innerHTML = checkoutRenderString;
 
   let total = getTotal(countOrderArr);
-  document.getElementById("order-total").textContent = total;
+  document.getElementById("order-total").textContent = `$` + total;
 }
 
 function getTotal(countOrderArr) {
@@ -90,10 +149,7 @@ function removeItem(itemName, countOrderArr) {
   renderOrderCheckout(countOrderArr);
 }
 
-document.getElementById("order-btn").addEventListener("click", function (e) {
-  e.preventDefault();
-  document.getElementById("payment-modal").style.display = "block";
-});
+
 
 function render() {
   return menuArray
@@ -117,46 +173,6 @@ function render() {
 
 document.getElementById("menu-items").innerHTML = render();
 
-document
-  .getElementById("cardNumber")
-  .addEventListener("input", function (event) {
-    this.value = this.value.replace(/\D/g, "");
-
-    if (this.value.length > 12) {
-      this.value = this.value.slice(0, 12);
-    }
-  });
-
-document.querySelector("form").addEventListener("submit", function (event) {
-  if (cardNumberInput.value.length < 12) {
-    event.preventDefault();
-    alert("Card number must be 12 digits long.");
-  }
-});
-
-document
-  .getElementById("cvvNumber")
-  .addEventListener("input", function (event) {
-    this.value = this.value.replace(/\D/g, "");
-
-    if (this.value.length > 3) {
-      this.value = this.value.slice(0, 3);
-    }
-  });
-
-document.querySelector("form").addEventListener("submit", function (event) {
-  if (cardNumberInput.value.length < 3) {
-    event.preventDefault();
-    alert("CVV number must be 3 digits long.");
-  }
-});
-
-document.getElementById("pay-btn").addEventListener("click", function (e) {
-  e.preventDefault();
-  document.getElementById("payment-modal").style.display = "none";
-  const name = document.getElementById("name").value;
-  renderOrderStatus(name);
-});
 
 function renderOrderStatus(name) {
   const orderStatusString = `<section id="order-status" class="order-status">
